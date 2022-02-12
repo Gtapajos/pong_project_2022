@@ -33,8 +33,8 @@ ball.shape("square")
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
-ball.dx = 0.1
-ball.dy = 0.1
+ball.dx = 0.3
+ball.dy = 0.3
 
 # score
 score_1 = 0
@@ -50,7 +50,6 @@ hud.hideturtle()
 hud.goto(0, 260)
 hud.write("0 : 0", align="center", font=("Press Start 2P", 24, "normal"))
 
-
 def paddle_1_up():
     y = paddle_1.ycor()
     if y < 250:
@@ -58,7 +57,6 @@ def paddle_1_up():
     else:
         y = 250
     paddle_1.sety(y)
-
 
 def paddle_1_down():
     y = paddle_1.ycor()
@@ -68,7 +66,6 @@ def paddle_1_down():
         y = -250
     paddle_1.sety(y)
 
-
 def paddle_2_up():
     y = paddle_2.ycor()
     if y < 250:
@@ -77,7 +74,6 @@ def paddle_2_up():
         y = 250
     paddle_2.sety(y)
 
-
 def paddle_2_down():
     y = paddle_2.ycor()
     if y > -250:
@@ -85,7 +81,6 @@ def paddle_2_down():
     else:
         y = -250
     paddle_2.sety(y)
-
 
 # keyboard
 screen.listen()
@@ -103,13 +98,13 @@ while True:
 
     # collision with the upper wall
     if ball.ycor() > 290:
-        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC | winsound.SND_FILENAME)
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
         ball.sety(290)
         ball.dy *= -1
 
     # collision with lower wall
     if ball.ycor() < -290:
-        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC | winsound.SND_FILENAME)
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
         ball.sety(-290)
         ball.dy *= -1
 
@@ -118,7 +113,7 @@ while True:
         score_2 += 1
         hud.clear()
         hud.write("{} : {}".format(score_1, score_2), align="center", font=("Press Start 2P", 24, "normal"))
-        winsound.PlaySound("score.wav", winsound.SND_ASYNC | winsound.SND_FILENAME)
+        winsound.PlaySound("score.wav", winsound.SND_ASYNC)
         ball.goto(0, 0)
         ball.dx *= -1
 
@@ -127,18 +122,18 @@ while True:
         score_1 += 1
         hud.clear()
         hud.write("{} : {}".format(score_1, score_2), align="center", font=("Press Start 2P", 24, "normal"))
-        winsound.PlaySound("score.wav", winsound.SND_ASYNC | winsound.SND_FILENAME)
+        winsound.PlaySound("score.wav", winsound.SND_ASYNC)
         ball.goto(0, 0)
         ball.dx *= -1
 
     # collision with the paddle 1
     if -330 > ball.xcor() > -350 and paddle_1.ycor() + 50 > ball.ycor() > paddle_1.ycor() - 50:
-        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC | winsound.SND_FILENAME)
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
         ball.setx(-330)
         ball.dx *= -1
 
     # collision with the paddle 2
     if 330 < ball.xcor() < 350 and paddle_2.ycor() + 50 > ball.ycor() > paddle_2.ycor() - 50:
-        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC | winsound.SND_FILENAME)
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
         ball.setx(330)
         ball.dx *= -1
