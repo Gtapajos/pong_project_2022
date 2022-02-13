@@ -1,5 +1,6 @@
 import turtle
 import winsound
+import time
 
 # draw screen
 screen = turtle.Screen()
@@ -36,10 +37,14 @@ ball.goto(0, 0)
 ball.dx = 0.3
 ball.dy = 0.3
 
+# insert the name of player
+player_1 = screen.textinput("Player 1", "Name of the player: ")
+player_2 = screen.textinput("Player 2", "Name of the player: ")
 
 # score
 score_1 = 0
 score_2 = 0
+score_win =10
 
 # head-up display
 hud = turtle.Turtle()
@@ -50,7 +55,8 @@ hud.penup()
 hud.hideturtle()
 hud.goto(0, 260)
 hud.write(
-    "0 : 0", align="center",
+    str(player_1) + "  0 " + ": 0  " + str(player_2),
+    align="center",
     font=("Press Start 2P", 24, "normal")
 )
 
@@ -122,9 +128,9 @@ while True:
         score_2 += 1
         hud.clear()
         hud.write(
-            "{} : {}".format(score_1, score_2),
+            str(player_1) + f"  {score_1} " + f": {score_2}  " + str(player_2),
             align="center",
-            font=("Press Start 2P", 24, "normal"),
+            font=("Press Start 2P", 24, "normal")
         )
         winsound.PlaySound("score.wav", winsound.SND_ASYNC)
         ball.goto(0, 0)
@@ -138,9 +144,9 @@ while True:
         score_1 += 1
         hud.clear()
         hud.write(
-            "{} : {}".format(score_1, score_2),
+            str(player_1) + f"  {score_1} " + f": {score_2}  " + str(player_2),
             align="center",
-            font=("Press Start 2P", 24, "normal"),
+            font=("Press Start 2P", 24, "normal")
         )
         winsound.PlaySound("score.wav", winsound.SND_ASYNC)
         ball.goto(0, 0)
@@ -156,14 +162,14 @@ while True:
         and paddle_1.ycor() + 50 > ball.ycor() > paddle_1.ycor() - 50
     ):
         ball.setx(-330)
-        # collision speed 1
+        # horizontal collision
         if paddle_1.ycor() + 10 > ball.ycor() > paddle_1.ycor() - 10:
             if ball.dy > 0:
                 ball.dy = 0.2
             if ball.dy < 0:
                 ball.dy = -0.2
             ball.dx *= -1
-        # collision speed 2
+        # collision fast
         if paddle_1.ycor() + 40 > ball.ycor() > paddle_1.ycor() + 10 \
                 or paddle_1.ycor() - 10 > ball.ycor() > paddle_1.ycor() - 40:
             if ball.dy > 0:
@@ -171,7 +177,7 @@ while True:
             if ball.dy < 0:
                 ball.dy = -0.4
             ball.dx = 0.4
-        # collision speed 3
+        # collision super fast
         if paddle_1.ycor() + 50 > ball.ycor() > paddle_1.ycor() + 40 \
                 or paddle_1.ycor() - 40 > ball.ycor() > paddle_1.ycor() - 50:
             if ball.dy > 0:
@@ -187,14 +193,14 @@ while True:
         and paddle_2.ycor() + 50 > ball.ycor() > paddle_2.ycor() - 50
     ):
         ball.setx(330)
-        # collision speed 1
+        # horizontal collision
         if paddle_2.ycor() + 10 > ball.ycor() > paddle_2.ycor() - 10:
             if ball.dy > 0:
                 ball.dy = 0.2
             if ball.dy < 0:
                 ball.dy = -0.2
             ball.dx *= -1
-        # collision speed 2
+        # collision fast
         if paddle_2.ycor() + 40 > ball.ycor() > paddle_2.ycor() + 10 \
                 or paddle_2.ycor() - 10 > ball.ycor() > paddle_2.ycor() - 40:
             if ball.dy > 0:
@@ -202,7 +208,7 @@ while True:
             if ball.dy < 0:
                 ball.dy = -0.4
             ball.dx = -0.4
-        # collision speed 3
+        # collision super fast
         if paddle_2.ycor() + 50 > ball.ycor() > paddle_2.ycor() + 40 \
                 or paddle_2.ycor() - 40 > ball.ycor() > paddle_2.ycor() - 50:
             if ball.dy > 0:
@@ -211,3 +217,26 @@ while True:
                 ball.dy = -0.7
             ball.dx = -0.6
         winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+    if score_1 >= score_win:
+        screen.clear()
+        screen.bgcolor("black")
+        hud.goto(0, 0)
+        hud.color('yellow')
+        hud.write(
+            str(player_1) + " won the match! ", align="center",
+            font=("Press Start 2P", 32, "normal")
+        )
+        time.sleep(3)
+        break
+
+    if score_2 >= score_win:
+        screen.clear()
+        screen.bgcolor("black")
+        hud.goto(0, 0)
+        hud.color('yellow')
+        hud.write(
+            str(player_2) + " won the match! ", align="center",
+            font=("Press Start 2P", 32, "normal")
+        )
+        time.sleep(3)
+        break
