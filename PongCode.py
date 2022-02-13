@@ -36,6 +36,7 @@ ball.goto(0, 0)
 ball.dx = 0.3
 ball.dy = 0.3
 
+
 # score
 score_1 = 0
 score_2 = 0
@@ -48,7 +49,11 @@ hud.color("white")
 hud.penup()
 hud.hideturtle()
 hud.goto(0, 260)
-hud.write("0 : 0", align="center", font=("Press Start 2P", 24, "normal"))
+hud.write(
+    "0 : 0", align="center",
+    font=("Press Start 2P", 24, "normal")
+)
+
 
 def paddle_1_up():
     y = paddle_1.ycor()
@@ -58,6 +63,7 @@ def paddle_1_up():
         y = 250
     paddle_1.sety(y)
 
+
 def paddle_1_down():
     y = paddle_1.ycor()
     if y > -250:
@@ -65,6 +71,7 @@ def paddle_1_down():
     else:
         y = -250
     paddle_1.sety(y)
+
 
 def paddle_2_up():
     y = paddle_2.ycor()
@@ -74,6 +81,7 @@ def paddle_2_up():
         y = 250
     paddle_2.sety(y)
 
+
 def paddle_2_down():
     y = paddle_2.ycor()
     if y > -250:
@@ -81,6 +89,7 @@ def paddle_2_down():
     else:
         y = -250
     paddle_2.sety(y)
+
 
 # keyboard
 screen.listen()
@@ -112,28 +121,93 @@ while True:
     if ball.xcor() < -390:
         score_2 += 1
         hud.clear()
-        hud.write("{} : {}".format(score_1, score_2), align="center", font=("Press Start 2P", 24, "normal"))
+        hud.write(
+            "{} : {}".format(score_1, score_2),
+            align="center",
+            font=("Press Start 2P", 24, "normal"),
+        )
         winsound.PlaySound("score.wav", winsound.SND_ASYNC)
         ball.goto(0, 0)
-        ball.dx *= -1
-
+        ball.dx = 0.3
+        if ball.dy >= 0:
+            ball.dy = 0.3
+        if ball.dy < 0:
+            ball.dy = -0.3
     # collision with right wall
     if ball.xcor() > 390:
         score_1 += 1
         hud.clear()
-        hud.write("{} : {}".format(score_1, score_2), align="center", font=("Press Start 2P", 24, "normal"))
+        hud.write(
+            "{} : {}".format(score_1, score_2),
+            align="center",
+            font=("Press Start 2P", 24, "normal"),
+        )
         winsound.PlaySound("score.wav", winsound.SND_ASYNC)
         ball.goto(0, 0)
-        ball.dx *= -1
+        ball.dx = -0.3
+        if ball.dy >= 0:
+            ball.dy = 0.3
+        if ball.dy < 0:
+            ball.dy = -0.3
 
     # collision with the paddle 1
-    if -330 > ball.xcor() > -350 and paddle_1.ycor() + 50 > ball.ycor() > paddle_1.ycor() - 50:
-        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+    if (
+        -340 < ball.xcor() < -330
+        and paddle_1.ycor() + 50 > ball.ycor() > paddle_1.ycor() - 50
+    ):
         ball.setx(-330)
-        ball.dx *= -1
+        # collision speed 1
+        if paddle_1.ycor() + 10 > ball.ycor() > paddle_1.ycor() - 10:
+            if ball.dy > 0:
+                ball.dy = 0.2
+            if ball.dy < 0:
+                ball.dy = -0.2
+            ball.dx *= -1
+        # collision speed 2
+        if paddle_1.ycor() + 40 > ball.ycor() > paddle_1.ycor() + 10 \
+                or paddle_1.ycor() - 10 > ball.ycor() > paddle_1.ycor() - 40:
+            if ball.dy > 0:
+                ball.dy = 0.4
+            if ball.dy < 0:
+                ball.dy = -0.4
+            ball.dx = 0.4
+        # collision speed 3
+        if paddle_1.ycor() + 50 > ball.ycor() > paddle_1.ycor() + 40 \
+                or paddle_1.ycor() - 40 > ball.ycor() > paddle_1.ycor() - 50:
+            if ball.dy > 0:
+                ball.dy = 0.7
+            if ball.dy < 0:
+                ball.dy = -0.7
+            ball.dx = 0.6
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
 
     # collision with the paddle 2
-    if 330 < ball.xcor() < 350 and paddle_2.ycor() + 50 > ball.ycor() > paddle_2.ycor() - 50:
-        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+    if (
+        340 > ball.xcor() > 330
+        and paddle_2.ycor() + 50 > ball.ycor() > paddle_2.ycor() - 50
+    ):
         ball.setx(330)
-        ball.dx *= -1
+        # collision speed 1
+        if paddle_2.ycor() + 10 > ball.ycor() > paddle_2.ycor() - 10:
+            if ball.dy > 0:
+                ball.dy = 0.2
+            if ball.dy < 0:
+                ball.dy = -0.2
+            ball.dx *= -1
+        # collision speed 2
+        if paddle_2.ycor() + 40 > ball.ycor() > paddle_2.ycor() + 10 \
+                or paddle_2.ycor() - 10 > ball.ycor() > paddle_2.ycor() - 40:
+            if ball.dy > 0:
+                ball.dy = 0.4
+            if ball.dy < 0:
+                ball.dy = -0.4
+            ball.dx = -0.4
+        # collision speed 3
+        if paddle_2.ycor() + 50 > ball.ycor() > paddle_2.ycor() + 40 \
+                or paddle_2.ycor() - 40 > ball.ycor() > paddle_2.ycor() - 50:
+            if ball.dy > 0:
+                ball.dy = 0.7
+            if ball.dy < 0:
+                ball.dy = -0.7
+            ball.dx = -0.6
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
